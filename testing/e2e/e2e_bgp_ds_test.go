@@ -289,8 +289,8 @@ var _ = Describe("kube-vip BGP when deployed as a regular pod", Ordered, func() 
 				_ = cmd.Run()
 
 				By("Flushing ipv6 neighbors")
-				exec.Command("ip", "-6", "neigh", "flush", "nud", "stale").Run()
-				exec.Command("ip", "-6", "neigh", "flush", "nud", "failed").Run()
+				// exec.Command("ip", "-6", "neigh", "flush", "nud", "stale").Run()
+				// exec.Command("ip", "-6", "neigh", "flush", "nud", "failed").Run()
 
 				By("Running ip neigh - after flush")
 				cmd = exec.Command("ip", "-6", "neigh")
