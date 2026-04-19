@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/exec"
 
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
@@ -280,6 +281,22 @@ var _ = Describe("kube-vip BGP when deployed as a regular pod", Ordered, func() 
 					BGPPeers:             "unnumbered:eth0",
 					BGPAS:                2,
 				}
+
+				By("Running ip neigh - before flush")
+				cmd := exec.Command("ip", "-6", "neigh")
+				cmd.Stdout = GinkgoWriter
+				cmd.Stderr = GinkgoWriter
+				_ = cmd.Run()
+
+				By("Flushing ipv6 neighbors")
+				exec.Command("ip", "-6", "neigh", "flush", "nud", "stale").Run()
+				exec.Command("ip", "-6", "neigh", "flush", "nud", "failed").Run()
+
+				By("Running ip neigh - after flush")
+				cmd = exec.Command("ip", "-6", "neigh")
+				cmd.Stdout = GinkgoWriter
+				cmd.Stderr = GinkgoWriter
+				_ = cmd.Run()
 
 				testDS(ctx, manifestValues, client, utils.IPv6Family, clusterName)
 			})
