@@ -285,9 +285,9 @@ var _ = Describe("kube-vip BGP when deployed as a regular pod", Ordered, func() 
 				By("Running ip neigh - before flush")
 				containerName := fmt.Sprintf("%s-control-plane", clusterName)
 				cmd := exec.Command("docker", "exec", containerName, "ip", "-6", "neigh")
-				cmd.Stdout = GinkgoWriter
-				cmd.Stderr = GinkgoWriter
-				_ = cmd.Run()
+				// cmd.Stdout = GinkgoWriter
+				// cmd.Stderr = GinkgoWriter
+				// _ = cmd.Run()
 				out, err := cmd.CombinedOutput()
 				fmt.Printf("Command Output: %v \nErr: %v\n", out, err)
 
@@ -297,9 +297,10 @@ var _ = Describe("kube-vip BGP when deployed as a regular pod", Ordered, func() 
 
 				By("Running ip neigh - after flush")
 				cmd = exec.Command("docker", "exec", containerName, "ip", "-6", "neigh")
-				cmd.Stdout = GinkgoWriter
-				cmd.Stderr = GinkgoWriter
-				_ = cmd.Run()
+				// cmd.Stdout = GinkgoWriter
+				// cmd.Stderr = GinkgoWriter
+				// _ = cmd.Run()
+				out, err = cmd.CombinedOutput()
 				fmt.Printf("Command Output: %v \nErr: %v\n", out, err)
 
 				testDS(ctx, manifestValues, client, utils.IPv6Family, clusterName)
